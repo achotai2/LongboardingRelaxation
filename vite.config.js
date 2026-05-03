@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  base: '/LongboardingRelaxation/',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -9,13 +10,15 @@ export default defineConfig({
         enabled: true
       },
       manifest: {
-        name: '360 Video Player',
-        short_name: '360Video',
+        name: 'Longboarding Relaxation',
+        short_name: 'Longboard',
         description: 'A PWA that plays 360/ultrawide video with device orientation control',
         theme_color: '#000000',
         background_color: '#000000',
-        display: 'fullscreen',
+        display: 'standalone',
         orientation: 'landscape',
+        start_url: '/LongboardingRelaxation/',
+        scope: '/LongboardingRelaxation/',
         icons: [
           {
             src: 'pwa-192x192.png',
