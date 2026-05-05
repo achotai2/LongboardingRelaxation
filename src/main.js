@@ -46,33 +46,15 @@ startButton.addEventListener('click', () => {
     // Hide button
     startButton.style.display = 'none';
 
-    // Request permissions for device orientation if needed (iOS 13+)
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    initControlsAndPlay();
-                } else {
-                    console.error('Permission to access device orientation was denied');
-                    // Fallback to touch controls here if desired
-                }
-            })
-            .catch(console.error);
-    } else {
-        // Non iOS 13+ devices
-        initControlsAndPlay();
-    }
-});
-
-function initControlsAndPlay() {
-    controls = new DeviceOrientationControls(camera);
+    // iOS and other strict browsers require media playback and unmuting to be synchronous within the user interaction event
     video.play();
-
-    // Attempt to unmute if we muted earlier for autoplay, requires user interaction which we just got
     video.muted = false;
 
+    // DeviceOrientationControls requests permission internally, but we must instantiate it synchronously
+    controls = new DeviceOrientationControls(camera);
+
     animate();
-}
+});
 
 function animate() {
     requestAnimationFrame(animate);
