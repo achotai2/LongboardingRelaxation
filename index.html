@@ -15,6 +15,15 @@
         width: 100vw;
         height: 100vh;
       }
+      #ui-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 10;
+        pointer-events: none;
+      }
       #start-button {
         position: absolute;
         top: 50%;
@@ -27,7 +36,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        z-index: 10;
+        pointer-events: auto;
       }
       #download-log-button {
         position: absolute;
@@ -40,14 +49,16 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        z-index: 10;
+        pointer-events: auto;
       }
     </style>
   </head>
   <body>
-    <button id="start-button">Start 360 Video</button>
-    <button id="download-log-button">Download Log</button>
     <div id="app"></div>
+    <div id="ui-container">
+      <button id="start-button">Start 360 Video</button>
+      <button id="download-log-button">Download Log</button>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
