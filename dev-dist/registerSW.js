@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/LongboardingRelaxation/dev-sw.js?dev-sw', { scope: '/LongboardingRelaxation/', type: 'classic' })
