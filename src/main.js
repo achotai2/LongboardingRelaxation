@@ -37,7 +37,7 @@ document.getElementById('app').appendChild(renderer.domElement);
 
 // Create video element
 const video = document.createElement('video');
-video.src = 'Videos/360Video1.mp4'; // We'll put our video in public/
+video.src = import.meta.env.BASE_URL + 'Videos/360Video1.mp4'; // We'll put our video in public/
 video.loop = true;
 video.muted = true; // Important for autoplay on some browsers, maybe change later if sound needed
 video.crossOrigin = 'anonymous';
