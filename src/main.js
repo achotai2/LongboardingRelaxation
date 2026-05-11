@@ -33,6 +33,7 @@ if (downloadButton) {
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(CONFIG.baseZoom, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('app').appendChild(renderer.domElement);
 
@@ -65,6 +66,7 @@ const texture = new THREE.VideoTexture(video);
 texture.minFilter = THREE.LinearFilter;
 texture.magFilter = THREE.LinearFilter;
 texture.format = THREE.RGBAFormat;
+texture.colorSpace = THREE.SRGBColorSpace;
 
 // Create sphere geometry to map video onto
 // Scale X by -1 to put video inside the sphere so we can look around from the center
