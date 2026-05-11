@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { DeviceOrientationControls } from "./DeviceOrientationControls.js";
+import { CONFIG } from "./config.js";
 
 // Logging infrastructure
 const logMessages = [];
@@ -30,7 +31,7 @@ if (downloadButton) {
 
 // Setup basic Three.js scene
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(CONFIG.baseZoom, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('app').appendChild(renderer.domElement);
@@ -127,6 +128,11 @@ function animate() {
 
     if (controls) {
         controls.update();
+
+        const euler = new THREE.Euler().setFromQuaternion(camera.quaternion, 'YXZ');
+        const lookFactor = Math.abs(Math.sin(euler.y));
+        camera.fov = CONFIG.baseZoom + (CONFIG.zoomChangeOnLookAround * lookFactor);
+        camera.updateProjectionMatrix();
     }
 
     renderer.render(scene, camera);
