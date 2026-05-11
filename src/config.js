@@ -1,4 +1,4 @@
 export const CONFIG = {
-    baseZoom: 75,
+    baseZoom: 50,
     zoomChangeOnLookAround: 15
 };
