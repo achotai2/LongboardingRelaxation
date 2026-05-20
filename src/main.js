@@ -79,6 +79,79 @@ scene.add(mesh);
 
 let controls;
 
+// Player circle state and swipe logic
+let circleX = window.innerWidth / 2;
+let circleVelocity = 0;
+let lastTouchX = 0;
+let lastTouchTime = 0;
+const playerCircleEl = document.getElementById('player-circle');
+
+window.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+        lastTouchX = e.touches[0].clientX;
+        lastTouchTime = performance.now();
+        circleVelocity = 0; // Stop momentum on new touch
+    }
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+        const currentTouchX = e.touches[0].clientX;
+        const currentTime = performance.now();
+
+        const deltaX = currentTouchX - lastTouchX;
+        const deltaTime = currentTime - lastTouchTime;
+
+        // Update circle position directly while dragging
+        circleX += deltaX;
+
+        // Calculate velocity (pixels per ms)
+        if (deltaTime > 0) {
+             // scale up a bit for momentum effect later
+             circleVelocity = (deltaX / deltaTime) * 10;
+        }
+
+        lastTouchX = currentTouchX;
+        lastTouchTime = currentTime;
+    }
+}, { passive: true });
+
+window.addEventListener('touchend', (e) => {
+    // When touch ends, velocity is left at whatever it was during the last move,
+    // which gives it momentum.
+}, { passive: true });
+
+// Mouse fallback for testing on desktop
+let isMouseDown = false;
+window.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    lastTouchX = e.clientX;
+    lastTouchTime = performance.now();
+    circleVelocity = 0;
+});
+window.addEventListener('mousemove', (e) => {
+    if (isMouseDown) {
+        const currentTouchX = e.clientX;
+        const currentTime = performance.now();
+
+        const deltaX = currentTouchX - lastTouchX;
+        const deltaTime = currentTime - lastTouchTime;
+
+        circleX += deltaX;
+
+        if (deltaTime > 0) {
+             circleVelocity = (deltaX / deltaTime) * 10;
+        }
+
+        lastTouchX = currentTouchX;
+        lastTouchTime = currentTime;
+    }
+});
+window.addEventListener('mouseup', () => {
+    isMouseDown = false;
+});
+
+
 // Handle window resize
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -135,6 +208,29 @@ function animate() {
         const lookFactor = Math.abs(Math.sin(euler.y));
         camera.fov = CONFIG.baseZoom + (CONFIG.zoomChangeOnLookAround * lookFactor);
         camera.updateProjectionMatrix();
+    }
+
+    // Apply momentum and friction to circle
+    if (Math.abs(circleVelocity) > 0.1) {
+        circleX += circleVelocity;
+        circleVelocity *= 0.95; // Friction
+    } else {
+        circleVelocity = 0;
+    }
+
+    // Clamp to screen bounds
+    const circleRadius = 25; // 50px width/height / 2
+    if (circleX < circleRadius) {
+        circleX = circleRadius;
+        circleVelocity = 0; // stop at edge
+    } else if (circleX > window.innerWidth - circleRadius) {
+        circleX = window.innerWidth - circleRadius;
+        circleVelocity = 0; // stop at edge
+    }
+
+    // Update DOM
+    if (playerCircleEl) {
+        playerCircleEl.style.left = `${circleX}px`;
     }
 
     renderer.render(scene, camera);
