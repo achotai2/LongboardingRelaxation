@@ -53,6 +53,19 @@
         cursor: pointer;
         pointer-events: auto;
       }
+      #player-circle {
+        width: 50px;
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 2px solid white;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+        z-index: 20;
+      }
     </style>
     <script type="importmap">
       {
@@ -62,13 +75,14 @@
         }
       }
     </script>
-    <script type="module" crossorigin src="/LongboardingRelaxation/assets/index-BWEWq6Wm.js"></script>
+    <script type="module" crossorigin src="/LongboardingRelaxation/assets/index-C8q_mC9_.js"></script>
   <link rel="manifest" href="/LongboardingRelaxation/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/LongboardingRelaxation/registerSW.js"></script></head>
   <body>
     <div id="app"></div>
     <div id="ui-container">
       <button id="start-button">Start 360 Video</button>
       <button id="download-log-button">Download Log</button>
+      <div id="player-circle"></div>
     </div>
   </body>
 </html>
